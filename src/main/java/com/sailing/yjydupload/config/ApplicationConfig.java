@@ -1,5 +1,6 @@
 package com.sailing.yjydupload.config;
 
+import com.sailing.yjydupload.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -31,10 +32,10 @@ public class ApplicationConfig {
 
     @Bean
     public DataSource dataSource() {    // 配置数据源（优先使用环境变量中的数据源设置）
-        String username = choiceNotNull(envConfig.getUsername(), yjydUploadConfig.getUsername());
-        String password = choiceNotNull(envConfig.getPassword(), yjydUploadConfig.getPassword());
-        String url = choiceNotNull(envConfig.getUrl(), yjydUploadConfig.getUrl());
-        String driver = choiceNotNull(envConfig.getDriverClass(), yjydUploadConfig.getDriver());
+        String username = CommonUtil.choiceNotNull(envConfig.getUsername(), yjydUploadConfig.getUsername());
+        String password = CommonUtil.choiceNotNull(envConfig.getPassword(), yjydUploadConfig.getPassword());
+        String url = CommonUtil.choiceNotNull(envConfig.getUrl(), yjydUploadConfig.getUrl());
+        String driver = CommonUtil.choiceNotNull(envConfig.getDriverClass(), yjydUploadConfig.getDriver());
         return DataSourceBuilder.create()
                 .driverClassName(driver)
                 .url(url)
@@ -62,19 +63,16 @@ public class ApplicationConfig {
         return new JpaTransactionManager(factory);
     }
 
-    /**
-     * 选择非空的字符（优先选择第一个，都为空抛出异常）
-     * @param v1    字符串1
-     * @param v2    字符串2
-     * @return  非空字符串
-     */
-    private String choiceNotNull(String v1, String v2) {
-        if (!StringUtils.isEmpty(v1))
-            return v1;
-        else if (!StringUtils.isEmpty(v2))
-            return v2;
-        else
-            throw new RuntimeException("【配置加载】配置出错，数据为空，请检查是否有未配置的选项！");
+    @Bean
+    public UploadInfoConfig uploadInfoConfig() {
+        UploadInfoConfig uploadInfoConfig = new UploadInfoConfig();
+        uploadInfoConfig.setUrl(CommonUtil.choiceNotNull(envConfig.getUploadUrl(), yjydUploadConfig.getUploadUrl()));
+        uploadInfoConfig.setUsername(CommonUtil.choiceNotNull(envConfig.getUploadUsername(), yjydUploadConfig.getUploadUsername()));
+        uploadInfoConfig.setPassword(CommonUtil.choiceNotNull(envConfig.getUploadPassword(), yjydUploadConfig.getUploadPassword()));
+        uploadInfoConfig.setOpreateUser(CommonUtil.choiceNotNull(envConfig.getUploadOpreateuser(), yjydUploadConfig.getUploadOpreateuser()));
+        uploadInfoConfig.setLocalServerName(CommonUtil.choiceNotNull(envConfig.getUploadLocalservername(), yjydUploadConfig.getUploadLocalservername()));
+        return uploadInfoConfig;
     }
+
 
 }

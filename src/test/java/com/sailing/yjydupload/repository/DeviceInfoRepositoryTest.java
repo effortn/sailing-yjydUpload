@@ -22,7 +22,7 @@ public class DeviceInfoRepositoryTest {
     @Test
     public void findAll() {
         List<DeviceInfo> deviceInfoList = deviceInfoRepository.findAll();
-        Assert.assertTrue(deviceInfoList.size() == 1);
+        Assert.assertTrue(deviceInfoList.size() != 0);
     }
 
 }

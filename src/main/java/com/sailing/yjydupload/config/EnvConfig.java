@@ -28,4 +28,16 @@ public class EnvConfig {
     @Value("#{systemProperties['UPLOAD_URL']}")
     private String uploadUrl;
 
+    @Value("#{systemProperties['UPLOAD_USERNAME']}")
+    private String uploadUsername;
+
+    @Value("#{systemProperties['UPLOAD_PASSWORD']}")
+    private String uploadPassword;
+
+    @Value("#{systemProperties['UPLOAD_OPREATEUSER']}")
+    private String uploadOpreateuser;
+
+    @Value("#{systemProperties['UPLOAD_LOCALSERVERNAME']}")
+    private String uploadLocalservername;
+
 }

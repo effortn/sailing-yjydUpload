@@ -4,5 +4,9 @@ yjyd:
     password: feng9402
     url: jdbc:mysql://localhost:3306/study?useUnicode=true&characterEncoding=utf8
     driver-class: com.mysql.jdbc.Driver
-  url:
-    upload:
+  upload:
+    url: http://url
+    username: username
+    password: password
+    opreateuser: opreateuser
+    localservername: localServerName

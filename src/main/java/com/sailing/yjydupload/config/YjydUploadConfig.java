@@ -26,7 +26,19 @@ public class YjydUploadConfig {
     @Value("${yjyd.datasource.driver-class}")
     private String driver;
 
-    @Value("${yjyd.url.upload}")
+    @Value("${yjyd.upload.url}")
     private String uploadUrl;
+
+    @Value("${yjyd.upload.username}")
+    private String uploadUsername;
+
+    @Value("${yjyd.upload.password}")
+    private String uploadPassword;
+
+    @Value("${yjyd.upload.opreateuser}")
+    private String uploadOpreateuser;
+
+    @Value("${yjyd.upload.localservername}")
+    private String uploadLocalservername;
 
 }
