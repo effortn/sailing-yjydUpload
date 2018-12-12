@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  yjydUpload:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      # 数据库用户名
+      DB_USERNAME: root
+      # 数据库密码
+      DB_PASSWORD: feng9402
+      # 数据库URL
+      DB_URL: jdbc:mysql://192.168.0.104:3306/study?useUnicode=true&characterEncoding=utf8
+      # 数据库驱动类
+      DB_DRIVER_CLASS: com.mysql.jdbc.Driver
+      # 上传接口URL
+      UPLOAD_URL: http://test
+      # 上传接口参数用户名
+      UPLOAD_USERNAME: test
+      # 上传接口参数密码
+      UPLOAD_PASSWORD: test
+      # 操作人名称，一般为系统登录用户名称
+      UPLOAD_OPREATEUSER: test
+      # 本机名称，用于上级判断是否已开通该下级提交数据权限
+      UPLOAD_LOCALSERVERNAME: test
+    volumes:
+      - /root/logs:/opt/yjydUpload/logs

@@ -1,5 +1,6 @@
 package com.sailing.yjydupload.repository;
 
+import com.sailing.yjydupload.YjydUploadApplicationTests;
 import com.sailing.yjydupload.entity.DeviceInfo;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,9 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
-public class DeviceInfoRepositoryTest {
+public class DeviceInfoRepositoryTest extends YjydUploadApplicationTests {
 
     @Autowired
     private DeviceInfoRepository deviceInfoRepository;

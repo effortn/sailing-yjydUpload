@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * 应用Bean配置
@@ -50,10 +51,13 @@ public class ApplicationConfig {
                 new LocalContainerEntityManagerFactoryBean();
         factory.setDataSource(dataSource());
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        // 开启驼峰命名
         vendorAdapter.setGenerateDdl(true);
         factory.setPackagesToScan("com.sailing.yjydupload.entity");
         factory.setJpaVendorAdapter(vendorAdapter);
+        // 开启驼峰命名=
+        Properties jpaProperties = new Properties();
+        jpaProperties.setProperty("hibernate.physical_naming_strategy", "org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy");
+        factory.setJpaProperties(jpaProperties);
         return factory;
     }
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import com.alibaba.fastjson.JSON;
 import com.sailing.yjydupload.config.UploadInfoConfig;
 import com.sailing.yjydupload.dto.CameraDto;
 import com.sailing.yjydupload.dto.ResponseStatusDto;
@@ -55,10 +56,12 @@ public class YjydUploadServiceImpl implements YjydUploadService {
         uploadRequestDto.setOPREATEUSER(uploadInfoConfig.getOpreateUser());
         uploadRequestDto.setLOCALSERVERNAME(uploadInfoConfig.getLocalServerName());
 
+        // 模拟上传接口
+        log.info("【数据上传】请求参数：{}", JSON.toJSONString(uploadRequestDto));
         // 3. 数据上传
-        RestTemplate restTemplate = new RestTemplate();
+        /*RestTemplate restTemplate = new RestTemplate();
         UploadResponseDto responseDto = restTemplate.postForObject(uploadInfoConfig.getUrl(),
-                uploadRequestDto, UploadResponseDto.class);
+                JSON.toJSONString(uploadRequestDto), UploadResponseDto.class);
 
         // 4. 上传结果打印日志
         List<ResponseStatusDto> responseStatusList = responseDto.getResponseStatusList();
@@ -71,11 +74,10 @@ public class YjydUploadServiceImpl implements YjydUploadService {
             }
         });
 
-        log.info("【数据上传】上传结束，成功上传{}条数据！", (deviceInfoList.size() - failedInt.get()));
+        log.info("【数据上传】上传结束，成功上传{}条数据！", (deviceInfoList.size() - failedInt.get()));*/
     }
 
     @Scheduled(cron = "0 0 0 ? * 1")    // 每个星期一的0点执行一次
-
     public void uploadTask() {
         log.info("【数据上传任务】任务开始！");
         uploadDevice(queryDevice());
