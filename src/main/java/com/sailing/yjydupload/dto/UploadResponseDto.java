@@ -15,6 +15,6 @@ public class UploadResponseDto {
     /**
      * 返回信息集合
      */
-    private List ResponseStatusList;
+    private List<ResponseStatusDto> ResponseStatusList;
 
 }

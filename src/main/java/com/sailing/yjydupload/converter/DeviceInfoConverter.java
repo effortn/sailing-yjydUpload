@@ -15,7 +15,7 @@ public class DeviceInfoConverter {
      * @param deviceInfo    设备信息实体类
      * @return  CameraDto    设备信息DTO
      */
-    public CameraDto converter(DeviceInfo deviceInfo) {
+    public static CameraDto converter(DeviceInfo deviceInfo) {
         CameraDto cameraDto = new CameraDto();
         cameraDto.setSBBM(deviceInfo.getDeviceId());
         cameraDto.setSBMC(deviceInfo.getDeviceName());
