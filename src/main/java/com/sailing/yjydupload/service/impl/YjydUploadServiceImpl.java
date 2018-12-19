@@ -5,11 +5,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.sailing.yjydupload.config.UploadInfoConfig;
 import com.sailing.yjydupload.dto.CameraDto;
 import com.sailing.yjydupload.dto.ResponseStatusDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,6 +23,8 @@ import com.sailing.yjydupload.dto.UploadResponseDto;
 import com.sailing.yjydupload.entity.DeviceInfo;
 import com.sailing.yjydupload.repository.DeviceInfoRepository;
 import com.sailing.yjydupload.service.YjydUploadService;
+
+import javax.annotation.PostConstruct;
 
 @Slf4j
 @Service
@@ -59,10 +63,12 @@ public class YjydUploadServiceImpl implements YjydUploadService {
         // 模拟上传接口
         log.info("【数据上传】请求参数：{}", JSON.toJSONString(uploadRequestDto));
         // 3. 数据上传
-        /*RestTemplate restTemplate = new RestTemplate();
-        UploadResponseDto responseDto = restTemplate.postForObject(uploadInfoConfig.getUrl(),
-                JSON.toJSONString(uploadRequestDto), UploadResponseDto.class);
-
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(uploadInfoConfig.getUrl(),
+                JSON.toJSONString(uploadRequestDto), String.class);
+//        UploadResponseDto responseDto = restTemplate.postForObject(uploadInfoConfig.getUrl(),
+//                JSON.toJSONString(uploadRequestDto), UploadResponseDto.class);
+        UploadResponseDto responseDto = JSONObject.parseObject(responseEntity.getBody(), UploadResponseDto.class);
         // 4. 上传结果打印日志
         List<ResponseStatusDto> responseStatusList = responseDto.getResponseStatusList();
         // 定义变量记录失败条数
@@ -74,9 +80,10 @@ public class YjydUploadServiceImpl implements YjydUploadService {
             }
         });
 
-        log.info("【数据上传】上传结束，成功上传{}条数据！", (deviceInfoList.size() - failedInt.get()));*/
+        log.info("【数据上传】上传结束，成功上传{}条数据！", (deviceInfoList.size() - failedInt.get()));
     }
 
+    @PostConstruct
     @Scheduled(cron = "0 0 0 ? * 1")    // 每个星期一的0点执行一次
     public void uploadTask() {
         log.info("【数据上传任务】任务开始！");

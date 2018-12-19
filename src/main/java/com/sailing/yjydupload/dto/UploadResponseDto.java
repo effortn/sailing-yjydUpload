@@ -1,5 +1,6 @@
 package com.sailing.yjydupload.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class UploadResponseDto {
     /**
      * 返回信息集合
      */
+    @JSONField(name = "ResponseStatusList")
     private List<ResponseStatusDto> ResponseStatusList;
 
 }

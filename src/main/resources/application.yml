@@ -1,12 +1,20 @@
 yjyd:
+  # 数据库配置
   datasource:
-    username: root
-    password: feng9402
-    url: jdbc:mysql://localhost:3306/study?useUnicode=true&characterEncoding=utf8
-    driver-class: com.mysql.jdbc.Driver
+    username: bsitsqp
+    password: bsitsqp
+    url: jdbc:oracle:thin:@15.193.248.54:1521:snapall
+    driver-class: oracle.jdbc.driver.OracleDriver
+
+  # 一机一档上传API配置
   upload:
-    url: http://url
-    username: username
-    password: password
-    opreateuser: opreateuser
-    localservername: localServerName
+    # 上传URL
+    url: http://15.193.242.60:4012/sync/acceptCameras
+    # 用户名
+    username: admin
+    # 密码
+    password: admin
+    # 操作人名称，一般为系统登录用户名称
+    opreateuser: 宝山熙菱
+    # 本机名称，用于上级判断是否已开通该下级提交数据权限
+    localservername: 宝山熙菱
