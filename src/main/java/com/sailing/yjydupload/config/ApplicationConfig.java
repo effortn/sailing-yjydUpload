@@ -75,6 +75,7 @@ public class ApplicationConfig {
         uploadInfoConfig.setPassword(CommonUtil.choiceNotNull(envConfig.getUploadPassword(), yjydUploadConfig.getUploadPassword()));
         uploadInfoConfig.setOpreateUser(CommonUtil.choiceNotNull(envConfig.getUploadOpreateuser(), yjydUploadConfig.getUploadOpreateuser()));
         uploadInfoConfig.setLocalServerName(CommonUtil.choiceNotNull(envConfig.getUploadLocalservername(), yjydUploadConfig.getUploadLocalservername()));
+        uploadInfoConfig.setFilter(yjydUploadConfig.getFilter());
         return uploadInfoConfig;
     }
 

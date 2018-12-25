@@ -38,7 +38,13 @@ public class DeviceInfoConverter {
         cameraDto.setSXJWZLX(deviceInfo.getCameraPositionType());
 
         cameraDto.setWD(deviceInfo.getLatitude());
-        cameraDto.setXZQY(deviceInfo.getDeviceArea());
+
+        // 行政区划传成6位,如果大于六位,只截取前六位
+        String deviceArea = deviceInfo.getDeviceArea();
+        if (deviceArea.length() > 6) {
+            deviceArea = deviceArea.substring(0, 6);
+        }
+        cameraDto.setXZQY(deviceArea);
 
         cameraDto.setJSYYLB(deviceInfo.getUseType());
         cameraDto.setJSFW(deviceInfo.getMonitoringDirection());

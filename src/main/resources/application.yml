@@ -1,12 +1,16 @@
 yjyd:
   datasource:
-    username: root
-    password: feng9402
-    url: jdbc:mysql://localhost:3306/study?useUnicode=true&characterEncoding=utf8
-    driver-class: com.mysql.jdbc.Driver
+    username: bsitsqp
+    password: bsitsqp
+    url: jdbc:oracle:thin:@15.193.248.54:1521:snapall
+    driver-class: oracle.jdbc.driver.OracleDriver
   upload:
-    url: http://url
-    username: username
-    password: password
-    opreateuser: opreateuser
-    localservername: localServerName
+    url: http://15.193.242.60:4012/sync/acceptCameras
+    username: admin
+    password: admin
+    opreateuser: 宝山熙菱
+    localservername: 宝山熙菱
+    # 摄像机编码格式类型过滤，编码写在下面的才能上传，用逗号隔开
+    filter: 1
+server:
+  port: 9999

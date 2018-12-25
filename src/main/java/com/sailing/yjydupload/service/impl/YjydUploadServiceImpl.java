@@ -1,15 +1,18 @@
 package com.sailing.yjydupload.service.impl;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.sailing.yjydupload.config.UploadInfoConfig;
 import com.sailing.yjydupload.dto.CameraDto;
 import com.sailing.yjydupload.dto.ResponseStatusDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,6 +24,8 @@ import com.sailing.yjydupload.dto.UploadResponseDto;
 import com.sailing.yjydupload.entity.DeviceInfo;
 import com.sailing.yjydupload.repository.DeviceInfoRepository;
 import com.sailing.yjydupload.service.YjydUploadService;
+
+import javax.annotation.PostConstruct;
 
 @Slf4j
 @Service
@@ -34,7 +39,11 @@ public class YjydUploadServiceImpl implements YjydUploadService {
     
     @Override
     public List<DeviceInfo> queryDevice() {
-        return deviceInfoRepository.findAll();
+        // 对查找出的数据进行筛选，根据配置的摄像机编码格式类型
+        String filter = uploadInfoConfig.getFilter();
+        return deviceInfoRepository.findAll().stream().
+                filter(deviceInfo -> filter.contains(deviceInfo.getCameraNumFormat()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -47,36 +56,51 @@ public class YjydUploadServiceImpl implements YjydUploadService {
         log.info("【数据上传】开始上传数据，size：{}", deviceInfoList.size());
         // 2. 构建请求接口的参数 UploadRequestDto
         UploadRequestDto uploadRequestDto = new UploadRequestDto();
-        List<CameraDto> cameraDtoList = deviceInfoList.stream().map(deviceInfo -> {
-            return DeviceInfoConverter.converter(deviceInfo);
-        }).collect(Collectors.toList());
-        uploadRequestDto.setCameraList(cameraDtoList);
+        List<CameraDto> cameraDtoList = deviceInfoList.stream().map(deviceInfo ->
+            DeviceInfoConverter.converter(deviceInfo)).collect(Collectors.toList());
         uploadRequestDto.setUSERNAME(uploadInfoConfig.getUsername());
         uploadRequestDto.setPASSWORD(uploadInfoConfig.getPassword());
         uploadRequestDto.setOPREATEUSER(uploadInfoConfig.getOpreateUser());
         uploadRequestDto.setLOCALSERVERNAME(uploadInfoConfig.getLocalServerName());
 
-        // 模拟上传接口
+        // 打印上传参数
         log.info("【数据上传】请求参数：{}", JSON.toJSONString(uploadRequestDto));
+        uploadRequestDto.setCameraList(cameraDtoList);
         // 3. 数据上传
-        /*RestTemplate restTemplate = new RestTemplate();
-        UploadResponseDto responseDto = restTemplate.postForObject(uploadInfoConfig.getUrl(),
-                JSON.toJSONString(uploadRequestDto), UploadResponseDto.class);
-
+        RestTemplate restTemplate = new RestTemplate();
+        // 返回的数据不能直接用实体类接收
+//        UploadResponseDto responseDto1 = restTemplate.postForObject(uploadInfoConfig.getUrl(),
+//                uploadRequestDto, UploadResponseDto.class);
+//        restTemplate.postForEntity()
+        /*ResponseEntity<UploadResponseDto> responseDto = restTemplate.postForEntity(uploadInfoConfig.getUrl(),
+                uploadRequestDto, UploadResponseDto.class);*/
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(uploadInfoConfig.getUrl(),
+                uploadRequestDto, String.class);
+        UploadResponseDto responseDto = JSONObject.parseObject(responseEntity.getBody(), UploadResponseDto.class);
         // 4. 上传结果打印日志
         List<ResponseStatusDto> responseStatusList = responseDto.getResponseStatusList();
-        // 定义变量记录失败条数
+        // 5. 定义变量记录失败的ID号，如果出现错误，重新上传
+        List<String> failedIdList = new CopyOnWriteArrayList<>();
+        //  定义变量记录失败条数，打印日志
         AtomicInteger failedInt = new AtomicInteger(0);
         responseStatusList.stream().forEach(responseStatusDto -> {
             if (!"0".equals(responseStatusDto.getStatusCode())) {
+                failedIdList.add(responseStatusDto.getID());
                 failedInt.getAndIncrement();
                 log.error("【数据上传】部分数据上传失败，信息：{}", responseStatusDto);
             }
         });
-
-        log.info("【数据上传】上传结束，成功上传{}条数据！", (deviceInfoList.size() - failedInt.get()));*/
+        if (failedInt.get() == 0) {
+            log.info("【数据上传】上传结束，成功上传{}条数据！", deviceInfoList.size());
+        } else {
+            log.info("【数据上传】上传失败，上传失败{}条数据！过滤错误数据，准备下次上传", deviceInfoList.size());
+            // 6. 对上传错误的数据进行筛除，重新上传
+            List<DeviceInfo> secondUploadDeviceInfoList = deviceInfoList.stream().filter(deviceInfo -> !failedIdList.contains(deviceInfo.getDeviceId())).collect(Collectors.toList());
+            uploadDevice(secondUploadDeviceInfoList);
+        }
     }
 
+    @PostConstruct
     @Scheduled(cron = "0 0 0 ? * 1")    // 每个星期一的0点执行一次
     public void uploadTask() {
         log.info("【数据上传任务】任务开始！");

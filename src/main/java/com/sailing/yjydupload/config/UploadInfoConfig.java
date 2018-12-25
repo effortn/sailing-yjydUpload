@@ -2,6 +2,8 @@ package com.sailing.yjydupload.config;
 
 import lombok.Data;
 
+import java.util.Map;
+
 /**
  * 设备信息上传接口参数及URL配置
  * create by en
@@ -34,5 +36,10 @@ public class UploadInfoConfig {
      * 本机名称，用于上级判断是否已开通该下级提交数据权限
      **/
     private String localServerName;
+
+    /**
+     * 上传数据过滤器
+     */
+    private String filter;
     
 }

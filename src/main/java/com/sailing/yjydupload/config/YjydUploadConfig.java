@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 /**
  * 项目配置类
  * create by en
@@ -40,5 +42,8 @@ public class YjydUploadConfig {
 
     @Value("${yjyd.upload.localservername}")
     private String uploadLocalservername;
+
+    @Value("${yjyd.upload.filter}")
+    private String filter;
 
 }
