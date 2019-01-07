@@ -1,0 +1,29 @@
+yjyd:
+  upload:
+    # 本地数据配置，device_info表所在的数据库
+    username: bsitsqp
+    password: bsitsqp
+    url: jdbc:oracle:thin:@15.193.248.54:1521:snapall
+    driver-class: oracle.jdbc.driver.OracleDriver
+    
+    # 一机一档服务器上传数据的URL，主要是IP和端口
+    upload-url: http://15.193.242.60:4012/sync/acceptCameras
+    # 需要协商一机一档服务提供者（即网力）获取上传数据接口中的参数，username，password，opreateuser，localservername，根据网力提供的参数，进行对应的配置
+    upload-username: admin
+    upload-password: admin
+    opreateuser: 宝山熙菱
+    localservername: 宝山熙菱
+    
+    # 数据筛选配置，符合下面配置的才会上传
+    # 配置方法：筛选的字段:(英文冒号) (空格)对应值 
+    # 筛选的字段需要以驼峰方式配置，对应的值有多个，以 ,(英文逗号)隔开
+    # 如果有多个上传条件，取并集
+    # 以下为示例
+    filter:
+      #下面的两项配置表示：camera_func_type为“1”且device_id为“310113”或“310000”才会被上传
+      # camera_func_type(摄像机功能类型)为1的设备才会上传
+      cameraFuncType: 1
+      # device_id(设备ID)为310113或者310000的才会上传
+      deviceId: 310113,310000
+server:
+  port: 9999

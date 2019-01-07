@@ -40,6 +40,6 @@ public class UploadInfoConfig {
     /**
      * 上传数据过滤器
      */
-    private String filter;
+    private Map<String, String> filter;
     
 }

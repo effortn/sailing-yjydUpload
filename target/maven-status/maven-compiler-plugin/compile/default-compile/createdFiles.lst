@@ -1,0 +1,16 @@
+com\sailing\yjydupload\config\UploadInfoConfig.class
+com\sailing\yjydupload\dto\UploadRequestDto.class
+com\sailing\yjydupload\config\ApplicationConfig.class
+com\sailing\yjydupload\dto\UploadResponseDto.class
+com\sailing\yjydupload\repository\DeviceInfoRepository.class
+com\sailing\yjydupload\service\impl\YjydUploadServiceImpl.class
+com\sailing\yjydupload\converter\DeviceInfoConverter.class
+com\sailing\yjydupload\entity\DeviceInfo.class
+com\sailing\yjydupload\config\YjydUploadConfig.class
+com\sailing\yjydupload\service\YjydUploadService.class
+com\sailing\yjydupload\util\CommonUtil.class
+com\sailing\yjydupload\config\DataFilter.class
+com\sailing\yjydupload\dto\ResponseStatusDto.class
+com\sailing\yjydupload\config\EnvConfig.class
+com\sailing\yjydupload\dto\CameraDto.class
+com\sailing\yjydupload\YjydUploadApplication.class

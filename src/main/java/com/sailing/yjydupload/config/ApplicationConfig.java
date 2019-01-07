@@ -36,7 +36,7 @@ public class ApplicationConfig {
         String username = CommonUtil.choiceNotNull(envConfig.getUsername(), yjydUploadConfig.getUsername());
         String password = CommonUtil.choiceNotNull(envConfig.getPassword(), yjydUploadConfig.getPassword());
         String url = CommonUtil.choiceNotNull(envConfig.getUrl(), yjydUploadConfig.getUrl());
-        String driver = CommonUtil.choiceNotNull(envConfig.getDriverClass(), yjydUploadConfig.getDriver());
+        String driver = CommonUtil.choiceNotNull(envConfig.getDriverClass(), yjydUploadConfig.getDriverClass());
         return DataSourceBuilder.create()
                 .driverClassName(driver)
                 .url(url)

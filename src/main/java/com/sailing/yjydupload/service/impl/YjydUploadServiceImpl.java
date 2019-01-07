@@ -1,15 +1,17 @@
 package com.sailing.yjydupload.service.impl;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.sailing.yjydupload.config.DataFilter;
 import com.sailing.yjydupload.config.UploadInfoConfig;
+import com.sailing.yjydupload.converter.DeviceInfoConverter;
 import com.sailing.yjydupload.dto.CameraDto;
 import com.sailing.yjydupload.dto.ResponseStatusDto;
+import com.sailing.yjydupload.dto.UploadRequestDto;
+import com.sailing.yjydupload.dto.UploadResponseDto;
+import com.sailing.yjydupload.entity.DeviceInfo;
+import com.sailing.yjydupload.repository.DeviceInfoRepository;
+import com.sailing.yjydupload.service.YjydUploadService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +19,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.sailing.yjydupload.config.YjydUploadConfig;
-import com.sailing.yjydupload.converter.DeviceInfoConverter;
-import com.sailing.yjydupload.dto.UploadRequestDto;
-import com.sailing.yjydupload.dto.UploadResponseDto;
-import com.sailing.yjydupload.entity.DeviceInfo;
-import com.sailing.yjydupload.repository.DeviceInfoRepository;
-import com.sailing.yjydupload.service.YjydUploadService;
-
 import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -36,13 +34,15 @@ public class YjydUploadServiceImpl implements YjydUploadService {
 	
     @Autowired
     private DeviceInfoRepository deviceInfoRepository;
+
+    @Autowired
+    private DataFilter dataFilter;
     
     @Override
     public List<DeviceInfo> queryDevice() {
         // 对查找出的数据进行筛选，根据配置的摄像机编码格式类型
-        String filter = uploadInfoConfig.getFilter();
-        return deviceInfoRepository.findAll().stream().
-                filter(deviceInfo -> filter.contains(deviceInfo.getCameraNumFormat()))
+        return deviceInfoRepository.findAll().stream()
+                .filter(deviceInfo -> dataFilter.filter(deviceInfo))
                 .collect(Collectors.toList());
     }
 
@@ -95,7 +95,8 @@ public class YjydUploadServiceImpl implements YjydUploadService {
         } else {
             log.info("【数据上传】上传失败，上传失败{}条数据！过滤错误数据，准备下次上传", deviceInfoList.size());
             // 6. 对上传错误的数据进行筛除，重新上传
-            List<DeviceInfo> secondUploadDeviceInfoList = deviceInfoList.stream().filter(deviceInfo -> !failedIdList.contains(deviceInfo.getDeviceId())).collect(Collectors.toList());
+            List<DeviceInfo> secondUploadDeviceInfoList = deviceInfoList.stream().filter(deviceInfo ->
+                    !failedIdList.contains(deviceInfo.getDeviceId())).collect(Collectors.toList());
             uploadDevice(secondUploadDeviceInfoList);
         }
     }

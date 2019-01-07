@@ -9,7 +9,7 @@ yjyd:
     upload-password: admin
     upload-opreateuser: 宝山熙菱
     upload-localservername: 宝山熙菱
-    # 数据过滤，编码写在下面的才能上传，用逗号隔开
+    # 摄像机类型过滤，编码写在下面的才能上传，用逗号隔开
     filter:
       cameraFuncType: 1
       deviceId: 310113
