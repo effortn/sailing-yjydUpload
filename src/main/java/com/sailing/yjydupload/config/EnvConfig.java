@@ -40,4 +40,10 @@ public class EnvConfig {
     @Value("#{systemProperties['UPLOAD_LOCALSERVERNAME']}")
     private String uploadLocalservername;
 
+    @Value("#{systemProperties['XZQH']}")
+    private String xzqh;
+
+    @Value("#{systemProperties['QUERY_URL']}")
+    private String queryUrl;
+
 }

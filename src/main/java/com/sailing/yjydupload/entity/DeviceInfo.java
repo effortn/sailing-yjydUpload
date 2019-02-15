@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  * create by en
  * at 2018/12/11 10:19
  **/
-@Table(name = "DEVICE_INFO")
+@Table(name = "DEVICE_INFO_UPLOAD")
 @Entity
 @Data
 public class DeviceInfo {
@@ -21,12 +21,12 @@ public class DeviceInfo {
     /**
      * 序号（数字或字母）
      */
-    @Id
     private String id;
 
     /**
      * 设备ID（默认20位数字）
      */
+    @Id
     private String deviceId;
 
     /**

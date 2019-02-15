@@ -34,6 +34,10 @@ public class YjydUploadConfig {
 
     private String uploadLocalservername;
 
+    private String xzqh;
+
+    private String queryUrl;
+
     private Map<String, String> filter;
 
 }

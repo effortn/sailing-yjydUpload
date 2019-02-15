@@ -75,6 +75,8 @@ public class ApplicationConfig {
         uploadInfoConfig.setPassword(CommonUtil.choiceNotNull(envConfig.getUploadPassword(), yjydUploadConfig.getUploadPassword()));
         uploadInfoConfig.setOpreateUser(CommonUtil.choiceNotNull(envConfig.getUploadOpreateuser(), yjydUploadConfig.getUploadOpreateuser()));
         uploadInfoConfig.setLocalServerName(CommonUtil.choiceNotNull(envConfig.getUploadLocalservername(), yjydUploadConfig.getUploadLocalservername()));
+        uploadInfoConfig.setXzqh(CommonUtil.choiceNotNull(envConfig.getXzqh(), yjydUploadConfig.getXzqh()));
+        uploadInfoConfig.setQueryUrl(CommonUtil.choiceNotNull(envConfig.getQueryUrl(), yjydUploadConfig.getQueryUrl()));
         uploadInfoConfig.setFilter(yjydUploadConfig.getFilter());
         return uploadInfoConfig;
     }

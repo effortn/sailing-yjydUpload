@@ -42,4 +42,14 @@ public class UploadInfoConfig {
      */
     private Map<String, String> filter;
     
+    /**
+     * 拉取数据接口URL
+     **/
+    private String queryUrl;
+
+    /**
+     * 拉取接口参数行政区划
+     */
+    private String xzqh;
+
 }

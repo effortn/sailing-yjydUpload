@@ -9,9 +9,11 @@ yjyd:
     upload-password: admin
     upload-opreateuser: 宝山熙菱
     upload-localservername: 宝山熙菱
+    query-url: http://15.193.242.60:4012/sync/loadCameras
+    xzqh: 310113
     # 数据过滤，编码写在下面的才能上传，用逗号隔开
-    filter:
-      cameraFuncType: 1
-      deviceId: 310113
+#    filter:
+#      cameraFuncType: 1
+#      deviceId: 310113
 server:
   port: 9999
